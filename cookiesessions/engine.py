@@ -16,7 +16,7 @@ class SessionStore(SessionBase):
         """
         try:
             return signing.loads(self._session_key,
-                max_age=settings.SESSION_COOKIE_AGE)
+                max_age=settings.SESSION_COOKIE_AGE, salt=SESSION_COOKIE_SALT)
         except (signing.BadSignature, ValueError):
             self.create()
         return {}
