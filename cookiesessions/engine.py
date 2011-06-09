@@ -57,12 +57,11 @@ class SessionStore(SessionBase):
     
     def cycle_key(self):
         """
-        Keeps the same data but with a new key.  To do this, we have to 
+        Keeps the same data but with a new key.  To do this, we just have to
+        call ``save()`` and it will automatically save a cookie with a new key
+        at the end of the request.
         """
-        session_cache = getattr(self, '_session_cache', {})
-        self._session_key = signing.dumps(session_cache,
-            compress=SESSION_COOKIE_COMPRESS, salt=SESSION_COOKIE_SALT)
-        self.modified = True
+        self.save()
     
     def _get_session_key(self):
         """
