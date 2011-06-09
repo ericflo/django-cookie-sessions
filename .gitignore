@@ -9,3 +9,5 @@ media/css/*.r*.css
 *DS_Store
 *~
 testproject
+dist
+django_cookie_sessions.egg-info
