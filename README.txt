@@ -1,3 +1,4 @@
+======================
 django-cookie-sessions
 ======================
 
@@ -5,6 +6,8 @@ This is a session backend which uses Django's secure cookie encoding and
 decoding functionality to store the whole session in the cookie, instead of
 talking to some database or cache instance.
 
+
+------------
 Installation
 ------------
 
@@ -12,6 +15,8 @@ Set this in your settings:
 
     SESSION_ENGINE = 'cookiesessions.engine'
 
+
+----------------------
 Why would I want this?
 ----------------------
 
