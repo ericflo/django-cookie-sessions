@@ -1,8 +1,11 @@
+import time
+
 from django.conf import settings
 from django.core import signing
 from django.contrib.sessions.backends.base import SessionBase
 
 SESSION_COOKIE_COMPRESS = getattr(settings, 'SESSION_COOKIE_COMPRESS', True)
+SESSION_COOKIE_SALT = getattr(settings, 'SESSION_COOKIE_SALT', 'cookiesession')
 
 class SessionStore(SessionBase):
 
@@ -52,6 +55,15 @@ class SessionStore(SessionBase):
         self._session_cache = {}
         self.modified = True
     
+    def cycle_key(self):
+        """
+        Keeps the same data but with a new key.  To do this, we have to 
+        """
+        session_cache = getattr(self, '_session_cache', {})
+        self._session_key = signing.dumps(session_cache,
+            compress=SESSION_COOKIE_COMPRESS, salt=SESSION_COOKIE_SALT)
+        self.modified = True
+    
     def _get_session_key(self):
         """
         Most session backends don't need to override this method, but we do,
@@ -60,4 +72,5 @@ class SessionStore(SessionBase):
         session key.
         """
         session_cache = getattr(self, '_session_cache', {})
-        return signing.dumps(session_cache, compress=SESSION_COOKIE_COMPRESS)
+        return signing.dumps(session_cache, compress=SESSION_COOKIE_COMPRESS,
+            salt=SESSION_COOKIE_SALT)
